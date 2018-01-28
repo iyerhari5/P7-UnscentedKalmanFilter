@@ -363,7 +363,7 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 	//residual
 	VectorXd z_diff = z - z_pred;
 	double nis = z_diff.transpose()*S.inverse()*z_diff;
-	cout << nis << endl;
+	//scout << nis << endl;
 
 	x_ = x_ + K*z_diff;
 	P_ = P_ - K*S*K.transpose();
