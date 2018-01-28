@@ -1,28 +1,79 @@
-# Extended Kalman Filter Project
+# Unscented Kalman Filter Project
 
-The goal of this project is to implement an Extended Kalaman Filter using Radar and Lidar measurements.
+The goal of this project is to implement an Unscented Kalaman Filter using Radar and Lidar measurements.
+
+[//]: # (Image References)
+
+[image1]: ./images/NIS-Lidar.png
+[image2]: ./images/NIS-Radar.png
+
 
 ## Project Structure
 
 The crux of the code is implemented in 3 files:
 
-* FusionEKF.cpp
-* kalman_filter.cpp
+* ukf.cpp
 * Tools.cpp
 
-FusionEKF: This is the module that is responsible for initializing and calling the kalaman filter prediction and update functions 
-based on the type of the input measurement. The inpupts can be either from a Radar or from a Lidar
+ukf.cpp: This is the module that implements the unscented kalman filtering prediction and update equations for both the Lidar and Radar cases.
 
-kalaman_filter.cpp: This is the module that implements the kalman filtering prediction and update equations - both the linear case(Lidar) 
-and the non linear case (Radar)
-
-Tools.cpp: This module implements the RMS calculation as well as the Jacobian matrix calculation that is required for the non-linear update
-equations
+Tools.cpp: This module implements the RMS calculation
 
 ## Results
 
 For the dataset under Data folder, the RMSE values when using both Radar and Lidar inputs are given by:
 
+|   Variable         	|   RMSE 					| 
+|:---------------------:|:-------------------------:| 
+|   px        	 		| 0.0682    		    	| 
+|   py        	 		| 0.0828     		    	| 
+|   vx        	 		| 0.3365    		    	| 
+|   vy        	 		| 0.2184    		    	| 
+
+
+
+## Experiment with using only one of the sensors
+
+
+In this experiment, only one of the sensor measurements was used as input to the Kalman Filter.  The RMSE results are given below.
+
+Only Laser:
+0.1709, 0.1487, 0.6200, 0.2707
+
+Only Radar:
+0.2137, 0.2920, 0.3840, 0.23060
+
+
+Usng only Lidar measurents:
+
+
+|	Variable         	|     RMSE 					| 
+|:---------------------:|:-------------------------:| 
+| px        	 		| 0.1709     		    	| 
+| py        	 		| 0.1487    		    	| 
+| vx        	 		| 0.6200    		    	| 
+| vy        	 		| 0.2707    		    	| 
+
+
+Usng only Radar measurents:
+
+
+|	Variable         	|     RMSE 					| 
+|:---------------------:|:-------------------------:| 
+| px        	 		| 0.2137    		    	| 
+| py        	 		| 0.2920    		    	| 
+| vx        	 		| 0.3840    		    	| 
+| vy        	 		| 0.2306    		    	| 
+
+
+
+We can see that the Radar by itself gives worse estimates of the position. However vx and vy are better 
+estimated from the Radar only measurements compared to the Lidar. However, fusing information from both the sensors gives the best results.
+
+
+## Comparison to Extended Kalman Filter Results
+
+For the dataset under Data folder, the RMSE values when using both Radar and Lidar inputs for the Extended Kalman Filter are given by:
 
 |   Variable         	|   RMSE 					| 
 |:---------------------:|:-------------------------:| 
@@ -31,35 +82,18 @@ For the dataset under Data folder, the RMSE values when using both Radar and Lid
 |   vx        	 		| 0.451267  		    	| 
 |   vy        	 		| 0.439935  		    	| 
 
-
-## Experiment with using only one of the sensors
-
-
-In this experiment, only one of the sensor measurements was used as input to the Kalman Filter.  The RMSE results are given below.
-
-Usng only Lidar measurents:
+We see that the Unscented Kalman Filter is giving much better performance for estimating all the 4 parameters.
 
 
-|	Variable         	|     RMSE 					| 
-|:---------------------:|:-------------------------:| 
-| px        	 		| 0.183795   		    	| 
-| py        	 		| 0.154202  		    	| 
-| vx        	 		| 0.605092  		    	| 
-| vy        	 		| 0.485836  		    	| 
+## Consistency Checks of the Uncented Kalman Filter
+
+Figure below plots the NIS values for only the Lidar measurements. Since the measurement space is in 2D, the Chi-squared limit for 95% is 5.991
+as shown with the red line. We see that the filter is consistent for the Lidar measurements.
+
+![alt text][image1]
 
 
-Usng only Radar measurents:
+Figure below plots the NIS values for only the Radar measurements. Since the measurement space is in 3D, the Chi-squared limit for 95% is 7.815
+as shown with the red line. We see that the filter is consistent for the Lidar measurements.
 
-
-|	Variable         	|     RMSE 					| 
-|:---------------------:|:-------------------------:| 
-| px        	 		| 0.233172   		    	| 
-| py        	 		| 0.335998  		    	| 
-| vx        	 		| 0.617771  		    	| 
-| vy        	 		| 0.678604  		    	| 
-
-
-
-We can see that the Radar by itself gives the least accurate estimates. Using just Lidar gives better accuracy in the final measurements.
-However, fusing information from both the sensors gives the best results.
-
+![alt text][image2]
