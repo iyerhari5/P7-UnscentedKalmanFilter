@@ -4,8 +4,8 @@ The goal of this project is to implement an Unscented Kalaman Filter using Radar
 
 [//]: # (Image References)
 
-[image1]: ./images/NIS-Lidar.png
-[image2]: ./images/NIS-Radar.png
+[image1]: ./Images/NIS-Lidar.png
+[image2]: ./Images/NIS-Radar.png
 
 
 ## Project Structure
@@ -36,12 +36,6 @@ For the dataset under Data folder, the RMSE values when using both Radar and Lid
 
 
 In this experiment, only one of the sensor measurements was used as input to the Kalman Filter.  The RMSE results are given below.
-
-Only Laser:
-0.1709, 0.1487, 0.6200, 0.2707
-
-Only Radar:
-0.2137, 0.2920, 0.3840, 0.23060
 
 
 Usng only Lidar measurents:
